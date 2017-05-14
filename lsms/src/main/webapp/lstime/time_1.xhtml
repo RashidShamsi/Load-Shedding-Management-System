@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <p:graphicImage library="images" name="ajaxloading.gif" />
+            </p:dialog>
+
+                    <h:form id="timeform">
+                        <p:panel>
+                            <p:panelGrid id ="datagrid" columns="2">
+                                <p:outputLabel for="group" value="GROUPS"/>
+                                <p:selectOneMenu id="group" value="#{lsCycleTimeCreater.groupName}">
+                                    <f:selectItem itemLabel="Select Group" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{lsCycleTimeCreater.groupNamesList}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel for="category" value="Category"/>
+                                <p:selectOneMenu id="category" value="#{lsCycleTimeCreater.catName}">
+                                    <f:selectItem itemLabel="Select category" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{lsCycleTimeCreater.catNamesList}" />
+                                </p:selectOneMenu>
+                            </p:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="SUBMIT" icon="ui-icon-check" 
+                                             action="#{lsCycleTimeCreater.onGroupSelection()}" 
+                                             update=":timeform:timeTable:editgrid"/>
+                        </p:panel>
+                        <p:separator/>
+                        <p:panel>
+                            <p:dataTable id="timeTable" value="#{lsCycleTimeCreater.timeList}"
+                                         var="tl">
+                                <p:column>
+                                    <p:panelGrid id="editgrid" columns="2">
+                                        <p:outputLabel for="gp" value="GROUP"/>
+                                        <h:outputText id="gp" value="#{tl.groupName}"/>
+                                        <p:outputLabel for="ct" value="CATEGORY"/>
+                                        <h:outputText id="ct" value="#{tl.catName}"/>
+                                        <p:outputLabel for="cycle" value="CYCLE"/>
+                                        <p:selectOneMenu id="cycle" value="#{tl.cycleName}">
+                                            <f:selectItem itemLabel="Select cycle" itemValue="" noSelectionOption="true" />
+                                            <f:selectItems value="#{lsCycleTimeCreater.lsCycleList}" />
+                                        </p:selectOneMenu>
+                                        <h:outputText value="Enter Cycle time :"/>
+                                        <p:panelGrid columns="2">
+                                                <h:outputText value="Cycle's Off Time :"/>
+                                                <h:outputText value="Cycle's On Time :"/>
+                                                <pe:timePicker  value="#{tl.offTime}" widgetVar="spinnerTimeWidget1"/>
+                                                <pe:timePicker  value="#{tl.onTime}" widgetVar="spinnerTimeWidget2"/>
+                                        </p:panelGrid>   
+                                        <p:commandButton icon="ui-icon-close" action="#{lsCycleTimeCreater.cancel(tl)}"
+                                                         update=":timeform:timeTable"/>
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:dataTable>
+                            <p:separator/>
+                            <p:commandButton  value="Add cycle" icon="ui-icon-triangle-1-e"
+                                              action="#{lsCycleTimeCreater.add}" update=":timeform:timeTable"/>
+                            <p:commandButton  value="Save Time" icon="ui-icon-triangle-1-e"
+                                              action="#{lsCycleTimeCreater.persistTime}" update=":timeform:timeTable"/>
+                        </p:panel>
+                    </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

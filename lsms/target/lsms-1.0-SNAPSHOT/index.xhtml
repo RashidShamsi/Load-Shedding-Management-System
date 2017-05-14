@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head>
+        <title>K Electric LSMS</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <h:form id="indexForm">
+                    <p:panel>
+                        <p:accordionPanel id="eventAccordion">
+                            <p:tab id="extTab" title="Extended Ls">
+                                <p:dataTable id="extTable" value="#{indexBean.extendedEventList}" var="ext">
+                                    <p:column headerText="EVENT NUMBER">
+                                        <h:outputText value="#{ext.id}"/>
+                                    </p:column>
+                                    <p:column headerText="REASON">
+                                        <h:outputText value="#{ext.reason}"/>
+                                    </p:column>
+                                    <p:column headerText="START TIME">
+                                            <h:outputText value="#{ext.stTime}"/>
+                                    </p:column>
+                                    <p:column headerText="END TIME">
+                                        <h:outputText value="#{ext.enTime}"/>
+                                    </p:column>
+                                    <p:column headerText="DETAILS">
+                                        <p:commandButton value="DETAILS" action="#{indexBean.onExtRowSelect(ext)}"
+                                                         oncomplete="PF('extDlg').show();" update=":indexForm:extDialog"/>
+                                    </p:column>
+                                    <p:column headerText="FORCE STOP">
+                                        <p:commandButton value="STOP" action="#{indexBean.stopExtEvent(ext)}" update=":indexForm:eventAccordion"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                            <p:tab id="uslTab" title="Unscheduled Ls">
+                                <p:dataTable id="uslTable" value="#{indexBean.uslEventsList}" var="usl">
+                                    <p:column headerText="EVENT NUMBER">
+                                        <h:outputText value="#{usl.id}"/>
+                                    </p:column>
+                                    <p:column headerText="REASON">
+                                        <h:outputText value="#{usl.reason}"/>
+                                    </p:column>
+                                    <p:column headerText="START TIME">
+                                        <h:outputText value="#{usl.startTime}"/>
+                                    </p:column>
+                                    <p:column headerText="END TIME">
+                                        <h:outputText value="#{usl.endTime}"/>
+                                    </p:column>
+                                    <p:column headerText="DETAILS">
+                                        <p:commandButton value="DETAILS" action="#{indexBean.uslDetailFunction(usl)}"
+                                                         oncomplete="PF('uslDlg').show();" update=":indexForm:uslDialog"/>
+                                    </p:column>
+                                    <p:column headerText="FORCE STOP">
+                                        <p:commandButton value="STOP" action="#{indexBean.stopUslEvent(usl)}"  update=":indexForm:eventAccordion"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                            <p:tab id="ovlTab" title="Overloading">
+                                <p:dataTable id="ovlTable" value="#{indexBean.ovlEventsList}" var="ovl">
+                                    <p:column headerText="EVENT NUMBER">
+                                        <h:outputText value="#{ovl.ovlEventId}"/>
+                                    </p:column>
+                                    <p:column headerText="START TIME">
+                                        <h:outputText value="#{ovl.eventStartTime}"/>
+                                    </p:column>
+                                    <p:column headerText="END TIME">
+                                        <h:outputText value="#{ovl.eventEndTime}"/>
+                                    </p:column>
+                                    <p:column headerText="DETAILS">
+                                        <p:commandButton value="DETAILS" action="#{indexBean.ovlDetailFunction(ovl)}"
+                                                         oncomplete="PF('ovlDlg').show();" update=":indexForm:ovlDialog"/>
+                                    </p:column>
+                                    <p:column headerText="FORCE STOP">
+                                        <p:commandButton value="STOP" action="#{indexBean.stopOvlEvent(ovl)}"  update=":indexForm:eventAccordion"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                            <p:tab id="devTab" title="Ls Deviation">
+                                <p:dataTable id="devTable" value="#{indexBean.devEventsList}" var="dev">
+                                    <p:column headerText="EVENT NUMBER">
+                                        <h:outputText value="#{dev.id}"/>
+                                    </p:column>
+                                    <p:column headerText="START TIME">
+                                        <h:outputText value="#{dev.stTime}"/>
+                                    </p:column>
+                                    <p:column headerText="END TIME">
+                                        <h:outputText value="#{dev.enTime}"/>
+                                    </p:column>
+                                    <p:column headerText="DETAILS">
+                                        <p:commandButton value="DETAILS" action="#{indexBean.devDetailFunction(dev)}"
+                                                         oncomplete="PF('devDlg').show();" update=":indexForm:devDialog"/>
+                                    </p:column>
+                                    <p:column headerText="FORCE STOP">
+                                        <p:commandButton value="STOP" action="#{indexBean.stopDevEvent(dev)}"  update=":indexForm:eventAccordion"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                            <p:tab id="priTab" title="Ls Priority">
+                                <p:dataTable id="priTable" value="#{indexBean.priEventsList}" var="pri">
+                                    <p:column headerText="EVENT NUMBER">
+                                        <h:outputText value="#{pri.id}"/>
+                                    </p:column>
+                                    <p:column headerText="START DATE">
+                                        <h:outputText value="#{pri.stDate}"/>
+                                    </p:column>
+                                    <p:column headerText="END DATE">
+                                        <h:outputText value="#{pri.endDate}"/>
+                                    </p:column>
+                                    <p:column headerText="START TIME">
+                                        <h:outputText value="#{pri.stTime}"/>
+                                    </p:column>
+                                    <p:column headerText="END TIME">
+                                        <h:outputText value="#{pri.endTime}"/>
+                                    </p:column>
+                                    <p:column headerText="FEEDER">
+                                        <h:outputText value="#{pri.feeder.feedName}"/>
+                                    </p:column>
+                                    <p:column headerText="INFORMED TO">
+                                        <h:outputText value="#{pri.sboName}"/>
+                                    </p:column>
+                                    <p:column headerText="DETAILS">
+                                        <p:commandButton value="DETAILS" action="#{indexBean.priDetailFunction(pri)}"
+                                                         oncomplete="PF('priDlg').show();" update=":indexForm:priDialog"/>
+                                    </p:column>
+                                    <p:column headerText="FORCE STOP">
+                                        <p:commandButton value="STOP" action="#{indexBean.stopPriEvent(pri)}"  update=":indexForm:eventAccordion"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </p:panel>
+                    <p:dialog id="extDialog" header="Event Details" widgetVar="extDlg" showEffect="slide" hideEffect="drop">
+                        <p:dataTable value="#{indexBean.extendedEventCategories}" var="c">
+                            <p:column headerText="Extended Categories">
+                                <h:outputText value="#{c.extCatId.catName}"/>
+                            </p:column>
+                            <p:column headerText="Extended Time">
+                                <h:outputText value="#{c.extTime}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator/>
+                        <p:dataTable value="#{indexBean.extendedEventGrids}" var="g">
+                            <p:column headerText="Grids Extended">
+                                <h:outputText value="#{g.extGridId.gridName}"/>
+                            </p:column>
+                            <p:column headerText="Grids Load">
+                                <h:outputText value="#{g.gridLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                    <p:dialog id="uslDialog" header="Event Details" widgetVar="uslDlg" showEffect="slide" hideEffect="drop">
+                        <p:dataTable value="#{indexBean.uslGrids}" var="grids">
+                            <p:column headerText="UNSCHEDULED GRIDS">
+                                <h:outputText value="#{grids.uslGridId.gridName}"/>
+                            </p:column>
+                            <p:column headerText="LOAD">
+                                <h:outputText value="#{grids.gridLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                    <p:dialog id="ovlDialog" header="Event Details" widgetVar="ovlDlg" showEffect="slide" hideEffect="drop">
+                        <p:dataTable value="#{indexBean.ovlFeeders}" var="feeders">
+                            <p:column headerText="OVERLOADED FEEDER NAMES">
+                                <h:outputText value="#{feeders.ovlFeeder.feedName}"/>
+                            </p:column>
+                            <p:column headerText="OVERLOADING START TIME">
+                                <h:outputText value="#{feeders.fdOvlStartTime}"/>
+                            </p:column>
+                            <p:column headerText="OVERLOADING END TIME">
+                                <h:outputText value="#{feeders.fdOvlEndTime}"/>
+                            </p:column>
+                            <p:column headerText="FEEDER LOAD">
+                                <h:outputText value="#{feeders.feederLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                    <p:dialog id="devDialog" header="Event Details" widgetVar="devDlg" showEffect="slide" hideEffect="drop">
+                        <p:dataTable value="#{indexBean.devCategories}" var="categories">
+                            <p:column headerText="DEVIATED CATEGORIES">
+                                <h:outputText value="#{categories.devCat.catName}"/>
+                            </p:column>
+                            <p:column headerText="NUMBER OF FEEDERS">
+                                <h:outputText value="#{categories.feeders}"/>
+                            </p:column>
+                            <p:column headerText="LOAD DEVIATED">
+                                <h:outputText value="#{categories.load}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                    <p:dialog id="priDialog" header="Event Details" widgetVar="priDlg" showEffect="slide" hideEffect="drop">
+                        <p:dataTable value="#{indexBean.priCycles}" var="cycles">
+                            <p:column headerText="CYCLES EXEMPTED">
+                                <h:outputText value="#{cycles.exemptedCycle.cycName}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

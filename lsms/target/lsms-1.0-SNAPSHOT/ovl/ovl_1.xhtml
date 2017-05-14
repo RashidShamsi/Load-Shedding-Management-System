@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Overloading</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                          closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="images" name="ajaxloading.gif" />
+                </p:dialog>
+
+                <h:form id="ovlForm">
+                    <p:panel>
+                        <p:panelGrid columns="4">
+                            <p:outputLabel for="st" value="Start Time"/>
+                            <pe:timePicker id="st" value="#{overloadingBean.eventStartTime}"/>
+                            <p:outputLabel for="et" value="End Time"/>
+                            <pe:timePicker id="et" value="#{overloadingBean.eventEndTime}"/>
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel>
+                        <p:panelGrid id="selectionPanel" columns="2">
+                            <p:outputLabel for="cycle" value="Select Cycle"/>
+                            <p:selectOneMenu id="cycle" value="#{overloadingBean.selectedCycle}">
+                                <p:ajax event="change"/>
+                                <f:selectItem itemLabel="Select Cycle" noSelectionOption="true" />
+                                <f:selectItems value="#{overloadingBean.cycleList}"/> 
+                            </p:selectOneMenu>
+                            <p:outputLabel for="grids" value="Select Grid"/>
+                            <p:selectOneMenu id="grids" value="#{overloadingBean.selectedGrid}">
+                                <p:ajax event="change" listener="#{overloadingBean.onGridSelection()}" update="trafo"/>
+                                <f:selectItem itemLabel="Select grid" noSelectionOption="true" />
+                                <f:selectItems value="#{overloadingBean.gridList}"/> 
+                            </p:selectOneMenu>
+                            <p:outputLabel for="trafo" value="Select Trafo"/>
+                            <p:selectOneMenu id="trafo" value="#{overloadingBean.selectedTrafo}">
+                                <p:ajax event="change" listener="#{overloadingBean.onTrafoSelection()}" update="feeder"/>
+                                <f:selectItem itemLabel="Select trafo" noSelectionOption="true" />
+                                <f:selectItems value="#{overloadingBean.trafoList}"/> 
+                            </p:selectOneMenu>
+                            <p:outputLabel for="feeder" value="Select feeders"/>
+                            <p:selectManyMenu id="feeder" value="#{overloadingBean.selectedFeeder}" 
+                                              filter="true" filterMatchMode="contains" showCheckbox="true">
+                                <f:selectItems value="#{overloadingBean.feederList}"/>
+                                <p:ajax event="change" listener="#{overloadingBean.onFeederSelection()}" 
+                                        update=":ovlForm:feederTable"/>
+                            </p:selectManyMenu>
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:dataTable id="feederTable" 
+                                     value="#{overloadingBean.ovlFeederList}" var="ovlFeeder">
+                            <p:column headerText="Feeder Name">
+                                <h:outputText value="#{ovlFeeder.fd.feedName}"/>
+                            </p:column>
+                            <p:column headerText="Start Time">
+                                <pe:timePicker value="#{ovlFeeder.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <pe:timePicker value="#{ovlFeeder.onTime}"/>
+                            </p:column>
+                            <p:column headerText="Load">
+                                <h:inputText value="#{ovlFeeder.load}"/>
+                            </p:column>
+                            <p:column headerText="Scheduled Off time">
+                                <h:outputText value="#{ovlFeeder.schOffTime}"/>
+                            </p:column>
+                            <p:column headerText="Scheduled On time">
+                                <h:outputText value="#{ovlFeeder.schOnTime}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:separator/>
+                        <p:commandButton value="submit" action="#{overloadingBean.onSubmit()}"/>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

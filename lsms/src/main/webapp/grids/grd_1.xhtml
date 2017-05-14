@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <h:head>
+        <title>Create Grid</title>
+    </h:head>
+    
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="images" name="ajaxloading.gif" />
+                </p:dialog>
+
+                <h:form>
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            Create Grid
+                        </f:facet>
+                        <p:outputLabel for="gridname" value="Enter Grid Name :"/>
+                        <p:inputText id="gridname" value="#{gridBean.grName}"/>
+                        <p:outputLabel for="block" value="Select Block :"/>
+                        <p:selectOneMenu id="block" value="#{gridBean.blName}" filterMatchMode = "startsWith">
+                            <f:selectItem itemLabel="Select Block" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{gridBean.nameList}"   />
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:separator/>
+                    <p:commandButton type="submit" value="Create Grid" icon="ui-icon-disk" action="#{gridBean.gridCreator()}"/>
+                    <p:button outcome="grd_2" value="View Grids" icon="ui-icon-star"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

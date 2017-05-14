@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:p="http://primefaces.org/ui"
+       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <h:head>
+        <title>Create Category</title>
+    </h:head>
+    
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+        <ui:define name="content">
+                <h:form>
+                    <h:messages></h:messages>
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            Create Category
+                        </f:facet>
+                        <h:outputLabel for="categoryname" value="Enter Category name: " />
+                        <p:inputText id="categoryname" value="#{categoryBean.catName}" label="Categoryname" required="true" />
+                        <p:commandButton type="submit" value="Create" icon="ui-icon-disk" action="#{categoryBean.createCategory()}" />
+                        <p:button outcome="ct_2" value="View Categories" icon="ui-icon-star"/>
+                    </p:panelGrid>
+                </h:form>
+            </ui:define> 
+        </ui:composition>
+    </h:body>
+</html>
+

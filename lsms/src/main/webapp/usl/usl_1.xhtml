@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Unscheduled LS</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="images" name="ajaxloading.gif" />
+                </p:dialog>
+                <h:form>
+                    <p:panel>
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Enter start time :"/>
+                            <pe:timePicker value="#{unscheduledLsBean.startTime}"/>
+                            <p:outputLabel value="Enter end time :"/>
+                            <pe:timePicker value="#{unscheduledLsBean.endTime}"/>
+                            <p:outputLabel value="Enter Reason :"/>
+                            <p:inputTextarea value="#{unscheduledLsBean.reason}"/>
+                        </h:panelGrid>
+                    </p:panel>
+                    <p:separator />
+                    <p:panel header="Select grids"> 
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="gridList" value="Select Grids :"/>
+                            <p:selectManyMenu id="gridList" value="#{unscheduledLsBean.selectedGrids}" 
+                                              filter="true" filterMatchMode="contains" showCheckbox="true">
+                                <f:selectItems value="#{unscheduledLsBean.grids}"/>
+                                <p:ajax event="change" listener="#{unscheduledLsBean.gridSelectionFunction()}" update="gridTable "/>
+                            </p:selectManyMenu>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:dataTable id="gridTable" value="#{unscheduledLsBean.uslg}" var="g">
+                            <p:column headerText="Grid Name">
+                                <h:outputText value="#{g.uslGridId.gridName}"/>
+                            </p:column>
+                            <p:column headerText="Grid Load">
+                                <h:inputText value="#{g.gridLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:separator/>
+                    <p:commandButton value="create event" action="#{unscheduledLsBean.createUlsEvent()}"/>
+                </h:form>
+            </ui:define>    
+        </ui:composition>
+    </h:body>
+</html>
+

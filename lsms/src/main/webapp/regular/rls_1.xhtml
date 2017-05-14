@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+    <h:head>
+        <title>Regular Load Shedding</title>
+    </h:head>
+    
+    <h:body>
+        <ui:composition template="/template/regularLsTemplate.xhtml">
+            <ui:define name="content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="images" name="ajaxloading.gif" />
+                </p:dialog>
+                <h:form id="rlsForm">
+                    <p:panelGrid id="cPanel" columns="2">
+                         <p:outputLabel for="cycleMenu" value="Select Cycle"/>
+                         <p:selectOneMenu id="cycleMenu" value="#{regularLsBean.cycle}">
+                                <f:selectItem itemLabel="Select Cycle" noSelectionOption="true"/>
+                                <f:selectItems value="#{regularLsBean.lsCycles}" />
+                                <p:ajax event="change" listener="#{regularLsBean.onCycleSelection()}"
+                                        update=":rlsForm:gPanel"/>
+                            </p:selectOneMenu>
+                    </p:panelGrid>
+                    <p:panelGrid id="gPanel" columns="4">
+                        <p:dataTable id="group1A" value="#{regularLsBean.group1A}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="1A"/>
+                            </f:facet>
+                            <p:column headerText="Category" 
+                                      style="background-color: #{g.presentStatus eq 'Normal' ? 'green' : 'red'}">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders"
+                                      style="background-color: #{g.presentStatus eq 'Normal' ? 'green' : 'red'}">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time"
+                                      style="background-color: #{g.presentStatus eq 'Normal' ? 'green' : 'red'}">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time"
+                                      style="background-color: #{g.presentStatus eq 'Normal' ? 'green' : 'red'}">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" update=":rlsForm:db"
+                                    listener="#{regularLsBean.onRowSelection()}"/>
+                        </p:dataTable>
+                        <p:dataTable id="group2A" value="#{regularLsBean.group2A}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="2A"/>
+                            </f:facet>
+                            <p:column headerText="Category"
+                                      style="background-color: #{g.presentStatus eq 'Normal' ? 'green' : 'red'}">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders"
+                                      style="background-color: #{g.presentStatus eq 'Normal' ? 'green' : 'red'}">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time"
+                                      style="background-color: #{g.presentStatus eq 'Normal' ? 'green' : 'red'}">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time"
+                                      style="background-color: #{g.presentStatus eq 'Normal' ? 'green' : 'red'}">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" update=":rlsForm:db" 
+                                    listener="#{regularLsBean.onRowSelection()}"/>
+                        </p:dataTable>
+                        <p:dataTable id="group3A" value="#{regularLsBean.group3A}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="3A"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group4A" value="#{regularLsBean.group4A}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="4A"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group1B" value="#{regularLsBean.group1B}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="1B"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group2B" value="#{regularLsBean.group2B}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="2B"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group3B" value="#{regularLsBean.group3B}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="3B"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group4B" value="#{regularLsBean.group4B}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="4B"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group1C" value="#{regularLsBean.group1C}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="1C"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group2C" value="#{regularLsBean.group2C}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="2C"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group3C" value="#{regularLsBean.group3C}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="3C"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                        <p:dataTable id="group4C" value="#{regularLsBean.group4C}" var="g"
+                                     selectionMode="single" rowKey="#{g.category.catId}"
+                                     selection="#{regularLsBean.selectedCategory}">
+                            <f:facet name="header">
+                                <h:outputText value="4C"/>
+                            </f:facet>
+                            <p:column headerText="Category">
+                                <h:outputText value="#{g.category.catName}"/>
+                            </p:column>
+                            <p:column headerText="Feeders">
+                                <h:outputText value="#{g.feederCount}"/>
+                            </p:column>
+                            <p:column headerText="Off Time">
+                                <h:outputText value="#{g.lsTime.offTime}"/>
+                            </p:column>
+                            <p:column headerText="On Time">
+                                <h:outputText value="#{g.lsTime.onTime}"/>
+                            </p:column>
+                            <p:ajax event="rowSelect" oncomplete="PF('dbx').show();" 
+                                    listener="#{regularLsBean.onRowSelection()}" update=":rlsForm:db"/>
+                        </p:dataTable>
+                    </p:panelGrid>
+                    <p:dialog id="db" widgetVar="dbx" showEffect="slide" hideEffect="drop"
+                              width="600" height="500">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel for="group" value="Group"/>
+                                <h:outputText id="group" value="#{regularLsBean.selectedCategory.group.groupName}"/>
+                                <p:outputLabel for="cat" value="Category"/>
+                                <h:outputText id="cat" value="#{regularLsBean.selectedCategory.category.catName}"/>
+                                <p:outputLabel for="cs" value="Current Status"/>
+                                <h:outputText id="cs" value="#{regularLsBean.selectedCategory.presentStatus}"/>
+                                <p:outputLabel for="ss" value="Shedding Status"/>
+                                <h:outputText id="ss" value="#{regularLsBean.selectedCategory.lsStatus}"/>
+                                <!--<p:outputLabel for="ref" value="Reference Date"/>-->
+<!--                                <p:calendar id="ref" value="" 
+                                            navigator="true" pattern="yyyy-MMM-dd" mode="popup" showOn="button">
+                                    <p:ajax event="dateSelect" listener=""
+                                            update=":rlsForm:db"/>
+                                </p:calendar>-->
+                            </p:panelGrid>
+                            <p:separator/>
+                            <p:panelGrid id="rPanel" columns="2">
+                                <p:dataTable value="#{regularLsBean.lsGrids}" var="lsg">
+                                    <p:column headerText="Grids">
+                                        <h:outputText value="#{lsg.grid.gridName}"/>
+                                    </p:column>
+                                    <p:column headerText="Load">
+                                        <p:inputText id="load" value="#{lsg.loadShed}"/>
+                                    </p:column>
+                                </p:dataTable>
+<!--                                <p:dataTable id="rdb" value="" var="rl">
+                                    <p:column headerText="Reference Load">
+                                        <h:outputText value=""/>
+                                    </p:column>
+                                </p:dataTable>-->
+                            </p:panelGrid>
+                            <p:separator/>
+                            <p:commandButton value="submit" action="#{regularLsBean.onLoadSubmit()}" update=":rlsForm:gPanel :rlsForm:cPanel"/>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+        

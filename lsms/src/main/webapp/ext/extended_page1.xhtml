@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Extend LS</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="images" name="ajaxloading.gif" />
+                </p:dialog>
+                <h:form id="extForm">
+                    <p:panel header="Select categories and time to extend">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="catList" value="Select categories :"/>
+                            <p:selectManyMenu id="catList" value="#{extendedLsBean.selectedCategories}" 
+                                              filter="true" filterMatchMode="contains" showCheckbox="true">
+                                <f:selectItems value="#{extendedLsBean.categories}"/>
+                                <p:ajax event="change" listener="#{extendedLsBean.submitSelectedCats()}" update=":extForm:catExtension"/>
+                            </p:selectManyMenu>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:dataTable id="catExtension" value="#{extendedLsBean.ectList}" var="ectl">
+                            <p:column>
+                                <p:outputLabel value="#{ectl.cat.catName}"/>
+                            </p:column>
+                            <p:column>
+                                <pe:timePicker value="#{ectl.extendedTime}"/>
+                            </p:column> 
+        <!--                    <f:facet name="footer">
+                                <p:commandButton value="submit time" process="catExtension" action=""/>
+                            </f:facet>-->
+                        </p:dataTable>
+                    </p:panel>
+                    <p:separator />
+                    <p:panel header="Select grids"> 
+                        <h:panelGrid columns="2">
+                            <p:outputLabel for="gridList" value="Select Grids :"/>
+                            <p:selectManyMenu id="gridList" value="#{extendedLsBean.selectedGrids}" 
+                                              filter="true" filterMatchMode="contains" showCheckbox="true">
+                                <f:selectItems value="#{extendedLsBean.grids}"/>
+                                <p:ajax event="change" listener="#{extendedLsBean.gridExtensionFunction()}" update="gridTable "/>
+                            </p:selectManyMenu>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:dataTable id="gridTable" value="#{extendedLsBean.egrdList}" var="g">
+                            <p:column>
+                                <h:outputText value="#{g.extGridId.gridName}"/>
+                            </p:column>
+                            <p:column headerText="load">
+                                <h:inputText value="#{g.gridLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:separator />
+                    <p:panel>
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Enter Reason :"/>
+                            <p:inputTextarea value="#{extendedLsBean.reason}"/>
+                            <p:outputLabel value="Enter start time :"/>
+                            <pe:timePicker value="#{extendedLsBean.startTime}"/>
+                            <p:outputLabel value="Enter end time :"/>
+                            <pe:timePicker value="#{extendedLsBean.endTime}"/>
+                        </h:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="create event" action="#{extendedLsBean.createEvent()}"/>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>        
+    </h:body>
+</html>

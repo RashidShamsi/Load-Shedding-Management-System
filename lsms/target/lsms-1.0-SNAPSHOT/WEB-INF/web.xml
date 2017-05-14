@@ -1,0 +1,92 @@
+<web-app>
+    
+
+     <!--Registering the jsf servlet-->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <!--Servlet mapping-->
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+        
+    <welcome-file-list>
+        <welcome-file>index.xhtml</welcome-file>
+    </welcome-file-list>
+        
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
+    
+
+<!-- web fonts -->
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/vnd.ms-fontobject</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>otf</extension>
+        <mime-type>font/opentype</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>ttf</extension>
+        <mime-type>application/x-font-ttf</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>application/x-font-woff</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg</extension>
+        <mime-type>image/svg+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>ico</extension>
+        <mime-type>image/x-icon</mime-type>
+    </mime-mapping>
+
+    
+<!--    
+     ********************************************Security Section Starts 
+
+    Defining Draft Documents Security Constraint
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Load Shedding Draft Document</web-resource-name>
+            <url-pattern>/LoadSheddingPolicyDraft.html</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>master_admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    Defining Realm
+    <login-config>
+        <realm-name>ke</realm-name>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/Login.html</form-login-page>
+            <form-error-page>/loginerror.html</form-error-page>
+        </form-login-config>
+    </login-config>
+    
+      Security roles used by this web application 
+    <security-role>
+        <role-name>master_admin</role-name>
+        <role-name>technician</role-name>
+    </security-role>
+    
+     **********************************************Security Section Ends 
+-->
+
+</web-app>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">    
+        
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+               <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+               <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                   <p:graphicImage library="images" name="ajaxloading.gif" />
+               </p:dialog>
+                <h:form id="cForm">
+                    <p:dataTable id="ctg" value="#{categoryBean.CList}" var="cat">
+                        <f:facet name="header">
+                            <h:outputText value="CATEGORIES" />
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{cat.catName}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="EDIT" action="#{categoryBean.onCatSelection(cat)}"
+                                             oncomplete="PF('cdlg').show();" update=":cForm:ctg"/>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="DELETE" action="#{categoryBean.categoryDeleter(cat)}" 
+                                             update=":cForm:ctg"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:dialog id="c" header="Edit Category" widgetVar="cdlg" showEffect="explode" hideEffect="drop">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="cName" value="Name"/>
+                            <p:inputText id="cName" value="#{categoryBean.newCategoryName}" />
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="SUBMIT" action="#{categoryBean.categoryEditor()}" update=":cForm:ctg"/>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

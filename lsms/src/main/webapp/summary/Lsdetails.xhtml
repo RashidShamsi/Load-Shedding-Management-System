@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">   
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                          closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="images" name="ajaxloading.gif" />
+                </p:dialog>
+                <h:form id="dFrom">
+        <!--            <p:panel>
+                        <p:panelGrid columns="2">
+                            <p:outputLabel for="st" value="Start Time"/>
+                            <pe:timePicker id="st" value=""/>
+                            <p:outputLabel for="et" value="End Time"/>
+                            <pe:timePicker id="et" value=""/>
+                            <p:outputLabel for="d" value="Date"/>
+                            <p:calendar id="d" value="" 
+                                        navigator="true" pattern="yyyy-MMM-dd" mode="popup" showOn="button"/>
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="submit" action="" update=""/>
+                    </p:panel>-->
+                    <p:panel>
+                        <p:dataTable value="#{lsDetailBean.detailList}" var="dl">
+                            <p:column>
+                                <h:outputText value="#{dl.startTime}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{dl.endTime}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{dl.mwhLoad}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{dl.reason}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

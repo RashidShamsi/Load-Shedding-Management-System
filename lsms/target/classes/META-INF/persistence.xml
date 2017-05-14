@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="lsms_pu">
+    <jta-data-source>MyDatabase</jta-data-source>
+    <class>com.lsms.entities.Blocks</class>
+    <class>com.lsms.entities.Block</class>
+    <class>com.lsms.entities.Categories</class>
+    <class>com.lsms.entities.Transformer</class>
+    <class>com.lsms.entities.Feeder</class>
+    <class>com.lsms.entities.UnscheduledLs</class>
+    <class>com.lsms.entities.ExtendedLs</class>
+    <class>com.lsms.entities.LsDeviation</class>
+    <class>com.lsms.entities.LsCycleTime</class>
+    <class>com.lsms.entities.LsCycle</class>
+    <class>com.lsms.entities.ExtCategoriesTime</class>
+    <class>com.lsms.entities.ExtendedCycle</class>
+    <class>com.lsms.entities.ExtGrid</class>
+    <class>com.lsms.entities.UnscheduledLsGrids</class>
+    <class>com.lsms.entities.DeviationGrid</class>
+    <class>com.lsms.entities.DeviationCategory</class>
+    <class>com.lsms.entities.RegularLs</class>
+    <class>com.lsms.entities.OverloadEvent</class>
+    <class>com.lsms.entities.SpecialGroupFeeder</class>
+    <class>com.lsms.entities.SpecialCycle</class>
+    <class>com.lsms.entities.SpecialCycleLoad</class>
+    <class>com.lsms.entities.LsPriority</class>
+    <class>com.lsms.entities.PriorityCycles</class>
+    <class>com.lsms.entities.ShededCategory</class>
+    <class>com.lsms.entities.ShededGrid</class>
+    <class>com.lsms.entities.PowerFactor</class>
+    <class>com.lsms.entities.LsDetails</class>
+    <shared-cache-mode>NONE</shared-cache-mode>
+  </persistence-unit>
+</persistence>

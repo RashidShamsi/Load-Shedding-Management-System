@@ -1,0 +1,745 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Regular Ls</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/template/regularLsTemplate.xhtml">
+            <ui:define name="content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="images" name="ajaxloading.gif" />
+                </p:dialog>
+
+                <h:form id="regularForm">
+                    <p:panel id="cyclePanel">
+                        <p:panelGrid columns="2" >
+                            <p:outputLabel for="date" value="Reference Date"/>
+                            <p:calendar id="date" value="#{regularLsBean.refDate}" navigator="true" pattern="yyyy-MMM-dd">
+                            </p:calendar>
+                            <p:outputLabel for="cycleMenu" value="Select Cycle"/>
+                            <p:selectOneMenu id="cycleMenu" value="#{regularLsBean.cycle}">
+                                <f:selectItem itemLabel="Select Cycle" noSelectionOption="true"/>
+                                <f:selectItems value="#{regularLsBean.lsCycles}" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="select" type="submit" action="#{regularLsBean.onCycleSelect()}" update=":regularForm:groups :regularForm:comGroup"/>
+                    </p:panel>
+                    <p:separator/>
+                    <p:panelGrid id="groups" columns="4" style="width: 100%; padding: 0%; border-color: red;" >
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300" 
+                                     value="#{regularLsBean.grids1A}" var="L1A">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="1A"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.vhlcount1a}"/>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.hlcount1a}"/>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.mlcount1a}"/>
+                                </p:row>
+                                 <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="padding: 0px; font-size: 70%;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="padding: 0px; font-size: 70%;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="padding: 0px; font-size: 70%;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn1a}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff1a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn1a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff1a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn1a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff1a}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames1A" style="padding: 0px;">
+                                <h:outputText value="#{L1A.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload1A" style="padding: 0px;">
+                                <p:inputText value="#{L1A.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload1A" style="padding: 0px;">
+                                <p:inputText value="#{L1A.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload1A" style="padding: 0px;">
+                                <p:inputText value="#{L1A.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 0px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300" 
+                                     value="#{regularLsBean.grids2A}" var="L2A">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="2A"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.vhlcount2a}"/>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.hlcount2a}"/>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.mlcount2a}"/>
+                                </p:row>
+                                  <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="padding: 0px; font-size: 75%;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn2a}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff2a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn2a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff2a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn2a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff2a}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames2A" style="padding: 1px;">
+                                <h:outputText value="#{L2A.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload2A">
+                                <p:inputText value="#{L2A.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload2A">
+                                <p:inputText value="#{L2A.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload2A">
+                                <p:inputText value="#{L2A.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300"
+                                     value="#{regularLsBean.grids3A}" var="L3A">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="3A"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.vhlcount3a}"/>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.hlcount3a}"/>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.mlcount3a}"/>
+                                </p:row>
+                                 <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;" />
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn3a}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff3a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn3a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff3a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn3a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff3a}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames3A" style="padding: 1px;">
+                                <h:outputText value="#{L3A.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload3A">
+                                <p:inputText value="#{L3A.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload3A">
+                                <p:inputText value="#{L3A.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload3A">
+                                <p:inputText value="#{L3A.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;" 
+                                     scrollable="true" scrollHeight="200" scrollWidth="300" 
+                                     value="#{regularLsBean.grids4A}" var="L4A">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="4A"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.vhlcount4a}"/>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.hlcount4a}"/>
+                                    <p:column colspan="3" style="padding: 1px;" headerText="#{regularLsBean.mlcount4a}"/>
+                                </p:row>
+                                 <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                   <p:column headerText="#{regularLsBean.vhlOn4a}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff4a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn4a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff4a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn4a}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff4a}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames4A" style="padding: 1px;">
+                                <h:outputText value="#{L4A.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload4A">
+                                <p:inputText value="#{L4A.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload4A">
+                                <p:inputText value="#{L4A.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload4A">
+                                <p:inputText value="#{L4A.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300"
+                                     value="#{regularLsBean.grids1B}" var="L1B">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="1B"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcount1b}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcount1b}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcount1b}"/>
+                                </p:row>
+                                 <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn1b}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff1b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn1b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff1b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn1b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff1b}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames1B" style="padding: 1px;">
+                                <h:outputText value="#{L1B.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload1B">
+                                <p:inputText value="#{L1B.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload1B">
+                                <p:inputText value="#{L1B.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload1B">
+                                <p:inputText value="#{L1B.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300"
+                                     value="#{regularLsBean.grids2B}" var="L2B">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="2B"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcount2b}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcount2b}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcount2b}"/>
+                                </p:row>
+                                  <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                   <p:column headerText="#{regularLsBean.vhlOn2b}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff2b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn2b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff2b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn2b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff2b}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames2B" style="padding: 1px;">
+                                <h:outputText value="#{L2B.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload2B">
+                                <p:inputText value="#{L2B.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload2B">
+                                <p:inputText value="#{L2B.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload2B">
+                                <p:inputText value="#{L2B.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300"
+                                     value="#{regularLsBean.grids3B}" var="L3B">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="3B"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcount3b}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcount3b}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcount3b}"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn3b}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff3b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn3b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff3b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn3b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff3b}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames3B" style="padding: 1px;">
+                                <h:outputText value="#{L3B.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload3B">
+                                <p:inputText value="#{L3B.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload3B">
+                                <p:inputText value="#{L3B.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload3B">
+                                <p:inputText value="#{L3B.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                       <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                    scrollable="true" scrollHeight="200" scrollWidth="300"
+                                    value="#{regularLsBean.grids4B}" var="L4B">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="4B"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcount4b}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcount4b}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcount4b}"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                   <p:column headerText="#{regularLsBean.vhlOn4b}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff4b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn4b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff4b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn4b}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff4b}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames4B" style="padding: 1px;">
+                                <h:outputText value="#{L4B.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload4B">
+                                <p:inputText value="#{L4B.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload4B">
+                                <p:inputText value="#{L4B.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload4B">
+                                <p:inputText value="#{L4B.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;" 
+                                     scrollable="true" scrollHeight="200" scrollWidth="300"
+                                     value="#{regularLsBean.grids1C}" var="L1C">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="1C"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcount1c}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcount1c}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcount1c}"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn1c}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff1c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn1c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff1c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn1c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff1c}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames1C" style="padding: 1px;">
+                                <h:outputText value="#{L1C.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload1C">
+                                <p:inputText value="#{L1C.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload1C">
+                                <p:inputText value="#{L1C.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload1C">
+                                <p:inputText value="#{L1C.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300"
+                                     value="#{regularLsBean.grids2C}" var="L2C">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="2C"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcount2c}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcount2c}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcount2c}"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn2c}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff2c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn2c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff2c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn2c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff2c}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames2C" style="padding: 1px;">
+                                <h:outputText value="#{L2C.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload2C">
+                                <p:inputText value="#{L2C.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload2C">
+                                <p:inputText value="#{L2C.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload2C">
+                                <p:inputText value="#{L2C.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300"
+                                     value="#{regularLsBean.grids3C}" var="L3C">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="3C"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcount3c}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcount3c}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcount3c}"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn3c}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff3c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn3c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff3c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn3c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff3c}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames3C" style="padding: 1px;">
+                                <h:outputText value="#{L3C.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload3C">
+                                <p:inputText value="#{L3C.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload3C">
+                                <p:inputText value="#{L3C.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload3C">
+                                <p:inputText value="#{L3C.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                        <p:dataTable style="width:100%; font-size:50%; padding: 1px;"
+                                     scrollable="true" scrollHeight="200" scrollWidth="300"
+                                     value="#{regularLsBean.grids4C}" var="L4C">
+                            <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="4C"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcount4c}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcount4c}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcount4c}"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style="font-size: 75%; padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOn4c}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOff4c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOn4c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOff4c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOn4c}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOff4c}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNames4C" style="padding: 1px;">
+                                <h:outputText value="#{L4C.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="Vhlload4C">
+                                <p:inputText value="#{L4C.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlload4C">
+                                <p:inputText value="#{L4C.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlload4C">
+                                <p:inputText value="#{L4C.regularls.mlLoad}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panelGrid>
+                    <p:dataTable id="comGroup" value="#{regularLsBean.gridsCom}" var="LCom">
+                        <p:columnGroup type="header">
+                                <p:row>
+                                    <p:column rowspan="4" headerText="COM"/>
+                                    <p:column colspan="3" headerText="VHL"/>
+                                    <p:column colspan="3" headerText="HL"/>
+                                    <p:column colspan="3" headerText="ML"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="3" headerText="#{regularLsBean.vhlcountCom}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.hlcountCom}"/>
+                                    <p:column colspan="3" headerText="#{regularLsBean.mlcountCom}"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style=" padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style=" padding: 0px;"/>
+                                    <p:column headerText="ON"/>
+                                    <p:column headerText="OFF"/>
+                                    <p:column rowspan="2" headerText="LOAD" style=" padding: 0px;"/>
+                                </p:row>
+                                <p:row>
+                                    <p:column headerText="#{regularLsBean.vhlOnCom}" style=" padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.vhlOffCom}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOnCom}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.hlOffCom}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOnCom}" style="padding: 1px;"/>
+                                    <p:column headerText="#{regularLsBean.mlOffCom}" style="padding: 1px;"/>
+                                </p:row>
+                            </p:columnGroup>
+                            <p:column id="gridNamesCom" style="padding: 0px;">
+                                <h:outputText value="#{LCom.regularls.grid.gridName}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="VhlloadCom">
+                                <p:inputText value="#{LCom.regularls.vhlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="hlloadCom">
+                                <p:inputText value="#{LCom.regularls.hlLoad}"/>
+                            </p:column>
+                            <p:column/>
+                            <p:column/>
+                            <p:column id="mlloadCom">
+                                <p:inputText value="#{LCom.regularls.mlLoad}"/>
+                            </p:column>
+                    </p:dataTable>
+                    <p:separator/>
+                    <p:commandButton value="submit" action="#{regularLsBean.onSubmit()}"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Create Feeder</title>
+    </h:head>
+    <h:body>
+        
+        <ui:composition template="/template/template.xhtml">
+            <ui:define name="content">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="images" name="ajaxloading.gif" />
+                </p:dialog>
+
+                <h:form>
+                    <p:panelGrid columns="2">
+                        <f:facet name="header">
+                            Create Feeder
+                        </f:facet>
+                        <p:outputLabel for="feedername" value="Enter Feeder Name :"/>
+                        <p:inputText id="feedername" value="#{feederBean.fdName}"/>
+                        <p:outputLabel for="category" value="Select Category :"/>
+                        <p:selectOneMenu id="category" value="#{feederBean.ctName}">
+                            <f:selectItem itemLabel="Select Category" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{feederBean.ctList}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="gridname" value="Select Grid :"/>
+                        <p:selectOneMenu id="gridname" value="#{feederBean.grName}">
+                            <p:ajax listener="#{feederBean.onGridNameChange()}" update="trafoname groupname"/>
+                            <f:selectItem itemLabel="Select Grid" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{feederBean.grList}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="groupname" value="Group :"/>
+                        <p:selectOneMenu id="groupname" value="#{feederBean.grpName}">
+                            <f:selectItem itemLabel="Select Group" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{feederBean.gpList}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="trafoname" value="Select Trafo :"/>
+                        <p:selectOneMenu id="trafoname" value="#{feederBean.trName}">
+                            <f:selectItem itemLabel="Select Trafo" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{feederBean.trList}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel for="exempt" value="Exempt From Ls :"/>
+                        <p:selectBooleanCheckbox id="exempt" value="#{feederBean.exStatus}">
+                            <p:ajax process="exempt" update="reason" event="change"/>
+                        </p:selectBooleanCheckbox>    
+                        <p:outputLabel for="reason" value="Enter Reason :"/>
+                        <p:inputTextarea id="reason" value="#{feederBean.reason}" disabled="#{!feederBean.exStatus}"/>
+                    </p:panelGrid>
+                    <p:separator/>
+                    <p:commandButton type="submit" value="Create Feeder" icon="ui-icon-disk" action="#{feederBean.feederCreater()}"/>
+                    <p:button outcome="fd_2" value="View Feeders" icon="ui-icon-star"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+                            
+        
+    </h:body>
+</html>
+

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Ls Priority</title>
+    </h:head>
+    <h:body>
+        <ui:composition  template="/template/template.xhtml">
+            <ui:define name="content">
+                <h:form id="pForm">
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                              closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage library="images" name="ajaxloading.gif" />
+                    </p:dialog>
+                    <p:panel>
+                        <p:panelGrid id="selection" columns="2">
+                            <p:outputLabel for="grids" value="Select Grid"/>
+                            <p:selectOneMenu id="grids" value="#{priorityBean.selectedGrid}">
+                                <f:selectItem itemLabel="Select Grid" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{priorityBean.gridNames}"/>
+                                <p:ajax event="change" listener="#{priorityBean.onGridSelection()}" update=":pForm:feeder"/>
+                            </p:selectOneMenu>
+                            <p:outputLabel for="feeder" value="Select Feeder"/>
+                            <p:selectOneMenu id="feeder" value="#{priorityBean.selectedFeeder}">
+                                <f:selectItem itemLabel="Select feeder" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{priorityBean.feederNames}"/>
+                                <p:ajax event="change" listener="#{priorityBean.onFeederSelection()}" update=":pForm:entry"/>
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:separator/>
+                    <p:panel>
+                        <p:panelGrid id="entry" columns="2">
+                            <p:outputLabel for="feederName" value="Feeder"/>
+                            <h:outputText id="feederName" value="#{priorityBean.feeder.feedName}"/>
+                            <p:outputLabel for="cat" value="Category"/>
+                            <h:outputText id="cat" value="#{priorityBean.feeder.categoryId.catName}"/>
+                            <p:outputLabel for="group" value="Group"/>
+                            <h:outputText id="group" value="#{priorityBean.feeder.groupId.groupName}"/>
+                            <p:outputLabel for="startTime" value="Start time:"/>
+                            <pe:timePicker id="startTime" value="#{priorityBean.startTime}"/>
+                            <p:outputLabel for="endTime" value="End time:"/>
+                            <pe:timePicker id="endTime" value="#{priorityBean.endTime}"/>
+                            <p:outputLabel for="sdate" value="Start Date"/>
+                            <p:calendar id="sdate" value="#{priorityBean.startDate}" navigator="true" pattern="yyyy-MMM-dd"/>
+                            <p:outputLabel for="edate" value="End Date"/>
+                            <p:calendar id="edate" value="#{priorityBean.endDate}" navigator="true" pattern="yyyy-MMM-dd"/>
+                            <p:outputLabel for="name" value="Informed to"/>
+                            <h:inputText id="name" value="#{priorityBean.name}"/>
+                            <p:outputLabel for="cycles" value="Exempt Cycle"/>
+                            <p:dataTable id="cycles" var="c" value="#{priorityBean.cycleList}" selection="#{priorityBean.selectedCycles}" rowKey="#{c.cycleTimeId}" style="margin-bottom:0">
+                                <f:facet name="header">
+                                    Cycles
+                                </f:facet>
+                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                                <p:column headerText="cycle name">
+                                    <h:outputText value="#{c.cycleId.cycName}" />
+                                </p:column>
+                                <p:column headerText="on time">
+                                    <h:outputText value="#{c.onTime}" />
+                                </p:column>
+                                <p:column headerText="off time">
+                                    <h:outputText value="#{c.offTime}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panelGrid>
+                        <p:separator/>
+                        <p:commandButton value="suubmit" action="#{priorityBean.onSubmit()}"/>
+                    </p:panel>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    <h:body>
+        <ui:composition template="/template/template.xhtml">
+             <ui:define name="content">
+                 <h:form id="gf">
+                     <p:dataTable id="gt" value="#{gridBean.gridsList}" var="gr">
+                       <f:facet name="header">
+                           <h:outputText value="Grids" />
+                       </f:facet>
+                       <p:column headerText="Names">
+                           <h:outputText value="#{gr.gridName}" />
+                       </p:column>
+                       <p:column headerText="Block Name">
+                            <h:outputText value="#{gr.blockId.blockName}" />
+                       </p:column>
+                       <p:column headerText="Extended Ls Status">
+                           <h:outputText value="#{gr.extensionStatus}" />
+                       </p:column>
+                       <p:column headerText="Unscheduled Ls Status">
+                           <h:outputText value="#{gr.unSchLs}" />
+                       </p:column>
+                       <p:column headerText="Ls Deviation Status">
+                           <h:outputText value="#{gr.deviationStatus}" />
+                       </p:column>
+                       <p:column>
+                           <p:commandButton value="EDIT" action="#{gridBean.onGridSelection(gr)}"
+                                            oncomplete="PF('gdlg').show();"
+                                            update=":gf:gt"/>
+                       </p:column>
+                        <p:column>
+                            <p:commandButton value="DELETE" action="#{gridBean.gridDeleter(gr)}" 
+                                             update=":gf:gt"/>
+                        </p:column>
+              .     </p:dataTable>
+                    <p:dialog id="g" header="Edit Grid" widgetVar="gdlg" showEffect="explode" hideEffect="drop">
+                       <h:form>
+                        <p:panelGrid columns="2">
+                           <p:outputLabel for="name" value="New name"/>
+                           <h:inputText id="name" value="#{gridBean.newGridName}"/>
+                           <p:outputLabel for="bname" value="New Block"/>
+                           <p:selectOneMenu id="bname" value="#{gridBean.newBlockName}" filterMatchMode = "startsWith">
+                                <f:selectItem itemLabel="Select Block" itemValue="" noSelectionOption="true" />
+                                <f:selectItems value="#{gridBean.nameList}"   />
+                           </p:selectOneMenu>
+                           <p:selectBooleanCheckbox id="ds" value="#{gridBean.deviationState}"/>
+                           <p:outputLabel for="ds" value="Ls Deviation"/>
+                           <p:selectBooleanCheckbox id="es" value="#{gridBean.extState}"/>
+                           <p:outputLabel for="es" value="Extended Ls"/>
+                           <p:selectBooleanCheckbox id="us" value="#{gridBean.unSchLsState}"/>
+                           <p:outputLabel for="us" value="Unscheduled Ls"/>
+                       </p:panelGrid>
+                       <p:separator/>
+                       <p:commandButton value="SUBMIT" action="#{gridBean.gridEditer()}" update=":gf:gt"/>
+                       </h:form>
+                   </p:dialog>
+                 </h:form>
+             </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
